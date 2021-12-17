@@ -315,34 +315,26 @@ function someCollections(db, name, query, metadata, parser, next, collections) {
     return next(null);
   }
 
-  collections.forEach(function (collection) {
+  collections.forEach(function (collectionName) {
+    const collection = db.collection(collectionName);
+    logger('select collection ' + collection.collectionName);
 
-    db.collection(collection, {
-      strict: true
-    }, function (err, collection) {
+    makeDir(name + collectionName + path.sep, function (err, name) {
 
-      if (err) { // returns an error if the collection does not exist
+      if (err) {
         return last === ++index ? next(err) : error(err);
       }
 
-      logger('select collection ' + collection.collectionName);
-      makeDir(name + collection.collectionName + path.sep, function (err, name) {
+      meta(collection, metadata, function () {
 
-        if (err) {
-          return last === ++index ? next(err) : error(err);
-        }
+        var stream = collection.find(query).stream();
 
-        meta(collection, metadata, function () {
+        stream.once('end', function () {
 
-          var stream = collection.find(query).stream();
+          return last === ++index ? next(null) : null;
+        }).on('data', function (doc) {
 
-          stream.once('end', function () {
-
-            return last === ++index ? next(null) : null;
-          }).on('data', function (doc) {
-
-            parser(doc, name);
-          });
+          parser(doc, name);
         });
       });
     });
@@ -369,52 +361,43 @@ function someCollectionsScan(db, name, numCursors, metadata, parser, next,
     return next(null);
   }
 
-  collections.forEach(function (collection) {
+  collections.forEach(function (collectionName) {
+    const collection = db.collection(collectionName);
+    logger('select collection scan ' + collectionName);
+    makeDir(name + collectionName + path.sep, function (err, name) {
 
-    db.collection(collection, {
-      strict: true
-    }, function (err, collection) {
-
-      if (err) { // returns an error if the collection does not exist
+      if (err) {
         return last === ++index ? next(err) : error(err);
       }
 
-      logger('select collection scan ' + collection.collectionName);
-      makeDir(name + collection.collectionName + path.sep, function (err, name) {
+      meta(collection, metadata, function () {
 
-        if (err) {
-          return last === ++index ? next(err) : error(err);
-        }
+        collection.parallelCollectionScan({
+          numCursors: numCursors
+        }, function (err, cursors) {
 
-        meta(collection, metadata, function () {
+          if (err) {
+            return last === ++index ? next(err) : error(err);
+          }
 
-          collection.parallelCollectionScan({
-            numCursors: numCursors
-          }, function (err, cursors) {
+          var ii, cursorsDone;
+          ii = cursorsDone = ~~cursors.length;
+          if (ii === 0) { // empty set
+            return last === ++index ? next(null) : null;
+          }
 
-            if (err) {
-              return last === ++index ? next(err) : error(err);
-            }
+          for (var i = 0; i < ii; ++i) {
+            cursors[i].once('end', function () {
 
-            var ii, cursorsDone;
-            ii = cursorsDone = ~~cursors.length;
-            if (ii === 0) { // empty set
-              return last === ++index ? next(null) : null;
-            }
+              // No more cursors let's ensure we got all results
+              if (--cursorsDone === 0) {
+                return last === ++index ? next(null) : null;
+              }
+            }).on('data', function (doc) {
 
-            for (var i = 0; i < ii; ++i) {
-              cursors[i].once('end', function () {
-
-                // No more cursors let's ensure we got all results
-                if (--cursorsDone === 0) {
-                  return last === ++index ? next(null) : null;
-                }
-              }).on('data', function (doc) {
-
-                parser(doc, name);
-              });
-            }
-          });
+              parser(doc, name);
+            });
+          }
         });
       });
     });
@@ -536,7 +519,7 @@ function wrapper(my) {
             function (err) {
 
               logger('db close');
-              db.close();
+              client.close();
               if (err) {
                 return callback(err);
               }
