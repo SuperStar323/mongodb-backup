@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.3",
   "name": "mongodb-backup-v2",
   "description": "backup for mongodb",
   "keywords": [
@@ -28,7 +28,7 @@
     "fstream": "1.0.10",
     "graceful-fs": "4.1.11",
     "logger-request": "3.7.3",
-    "mongodb": "2.2.16",
+    "mongodb": "4.2.2",
     "tar": "2.2.1"
   },
   "devDependencies": {

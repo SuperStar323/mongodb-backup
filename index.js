@@ -512,13 +512,14 @@ function wrapper(my) {
     }
   }
 
-  require('mongodb').MongoClient.connect(my.uri, my.options, function (err, db) {
+  require('mongodb').MongoClient.connect(my.uri, my.options, function (err, client) {
 
     logger('db open');
     if (err) {
       return callback(err);
     }
 
+    const db = client.db();
     var root = my.tar === null ? my.root : my.dir;
     makeDir(root, function (err, name) {
 
