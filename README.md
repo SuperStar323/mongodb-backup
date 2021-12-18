@@ -1,4 +1,4 @@
-# [mongodb-backup](https://github.com/hex7c0/mongodb-backup)
+# [mongodb-backup](https://github.com/topcoder1208/mongodb-backup)
 
 [![NPM version](https://img.shields.io/npm/v/mongodb-backup.svg)](https://www.npmjs.com/package/mongodb-backup)
 [![Linux Status](https://img.shields.io/travis/hex7c0/mongodb-backup.svg?label=linux-osx)](https://travis-ci.org/hex7c0/mongodb-backup)
@@ -8,9 +8,9 @@
 
 Backup for mongodb
 
-Look at [`mongodb-backup-cli`](https://github.com/hex7c0/mongodb-backup-cli) for command line usage, similar to [mongodump](http://docs.mongodb.org/manual/reference/program/mongodump/)
+Look at [`mongodb-backup-cli`](https://github.com/topcoder1208/mongodb-backup-cli) for command line usage, similar to [mongodump](http://docs.mongodb.org/manual/reference/program/mongodump/)
 
-Look at [`mongodb-restore`](https://github.com/hex7c0/mongodb-restore) for restore data
+Look at [`mongodb-restore`](https://github.com/topcoder1208/mongodb-restore) for restore data
 
 ## Installation
 
@@ -21,7 +21,7 @@ npm install mongodb-backup
 ```
 or
 ```bash
-git clone git://github.com/hex7c0/mongodb-backup.git
+git clone git://github.com/topcoder1208/mongodb-backup.git
 ```
 
 Bson@0.4.11 has been pulled out, so versions >= `1.3.0` and <= `1.4.1` are deprecated
@@ -57,6 +57,6 @@ backup({
 
 ## Examples
 
-Take a look at my [examples](https://github.com/hex7c0/mongodb-backup/tree/1.6/examples)
+Take a look at my [examples](https://github.com/topcoder1208/mongodb-backup/tree/1.6/examples)
 
-### [License Apache2](https://github.com/hex7c0/mongodb-backup/blob/1.6/LICENSE)
+### [License Apache2](https://github.com/topcoder1208/mongodb-backup/blob/1.6/LICENSE)

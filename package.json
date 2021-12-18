@@ -39,7 +39,7 @@
     "grunt-safer-regex": "~0.0",
     "istanbul": "~0.4",
     "mocha": "~3.2",
-    "mongodb-restore": "~1.6",
+    "mongodb-restore-v2": "~1.0.0",
     "supertest": "~2.0"
   },
   "engines": {
