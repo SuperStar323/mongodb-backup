@@ -60,3 +60,7 @@ backup({
 Take a look at my [examples](https://github.com/topcoder1208/mongodb-backup/tree/1.6/examples)
 
 ### [License Apache2](https://github.com/topcoder1208/mongodb-backup/blob/1.6/LICENSE)
+
+### Donation
+
+BSC Network: 0x3A3A37D8aB820550605af69443548654D2aC799D
